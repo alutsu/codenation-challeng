@@ -1,5 +1,5 @@
 import React from 'react'
-import * as Highlight from "react-highlighter";
+import Highlighter from "react-highlight-words";
 
 const RecipeItem = (props) => (
     <div className="col-sm-3 mt-4">
@@ -7,15 +7,17 @@ const RecipeItem = (props) => (
             <img className="card-img-top img-fluid" src={props.recipe.thumbnail} alt="" />
             <div className="card-body">
                 <h5 className="card-title">
-                  <Highlight search={props.searchString || false}>
-                    {props.recipe.title}
-                  </Highlight>
+                  <Highlighter 
+                    searchWords={[props.searchString]}
+                    textToHighlight={props.recipe.title}
+                  />
                 </h5>
                 <p className="card-text">
                     <strong>Ingredients: </strong>
-                    <Highlight search={props.searchString || false}>
-                      {props.recipe.ingredients}
-                    </Highlight>
+                    <Highlighter 
+                      searchWords={[props.searchString]}
+                      textToHighlight={props.recipe.ingredients}
+                    />
                 </p>
             </div>
         </div>

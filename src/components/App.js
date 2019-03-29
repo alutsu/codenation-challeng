@@ -20,14 +20,14 @@ class App extends Component {
   }
 
   filterRecipes = (regex) => {
-    this.recipes.filter(({title, ingredients}) => {
+    return this.recipes.filter(({title, ingredients}) => {
       return (
         title.search(regex) >= 0
         || ingredients.search(regex) >= 0
       )
     }).map((recipe) => {
       return <RecipeItem 
-                key={Math.random()} 
+                key={recipe.title} 
                 searchString={this.state.searchString}
                 recipe={recipe}/>
     })
