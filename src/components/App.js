@@ -10,26 +10,33 @@ class App extends Component {
     this.recipes = recipes.results;
     this.state = {
       searchString: '',
-      filteredRecipes: []
     };
-    this.state.filteredRecipes = this.recipes
   }
 
   searchRecipes = (e) => {
-    let filteredRecipes = this.recipes.filter(recipe => {
-      return (
-        recipe.title.toLowerCase().includes(e.target.value.toLowerCase())
-        || recipe.ingredients.toLowerCase().includes(e.target.value.toLowerCase())
-      )
-    })
     this.setState({ 
-      searchString: e.target.value,
-      filteredRecipes
+      searchString: e.target.value
+    })
+  }
+
+  filterRecipes = (regex) => {
+    this.recipes.filter(({title, ingredients}) => {
+      return (
+        title.search(regex) >= 0
+        || ingredients.search(regex) >= 0
+      )
+    }).map((recipe) => {
+      return <RecipeItem 
+                key={Math.random()} 
+                searchString={this.state.searchString}
+                recipe={recipe}/>
     })
   }
 
   render() { 
-    const { filteredRecipes } = this.state
+    const { searchString } = this.state
+    const regex = new RegExp(searchString, 'ig')
+
     return (
       <div className="App">
         <Navbar 
@@ -37,14 +44,7 @@ class App extends Component {
           searchString={this.state.searchString}/>
         <div className="container mt-10">
           <div className="row">
-            {
-              filteredRecipes.map((recipe) => {
-                return <RecipeItem 
-                          key={Math.random()} 
-                          searchString={this.state.searchString}
-                          recipe={recipe}/>
-              })
-            }
+            {this.filterRecipes(regex)}
           </div>
         </div>
       </div>
